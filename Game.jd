@@ -1,0 +1,401 @@
+let playing = false;
+
+let score = 0;
+
+let speed = 70;
+
+let carX = 50;
+
+let direction = 0;
+
+let objects = [];
+
+
+const car =
+  document.getElementById("car");
+
+const game =
+  document.getElementById("game");
+
+const scoreText =
+  document.getElementById("score");
+
+const speedText =
+  document.getElementById("speed");
+
+
+/* START GAME */
+
+function startGame() {
+
+  document.getElementById("start")
+    .style.display = "none";
+
+  playing = true;
+
+  speed = 70;
+
+  spawnTraffic();
+
+  spawnCoin();
+
+  requestAnimationFrame(loop);
+}
+
+
+/* LEFT CONTROL */
+
+function setLeft(event) {
+
+  event.preventDefault();
+
+  direction = -1;
+}
+
+
+/* RIGHT CONTROL */
+
+function setRight(event) {
+
+  event.preventDefault();
+
+  direction = 1;
+}
+
+
+/* STOP */
+
+function stop(event) {
+
+  event.preventDefault();
+
+  direction = 0;
+}
+
+
+const left =
+  document.getElementById("left");
+
+const right =
+  document.getElementById("right");
+
+
+/* PHONE CONTROLS */
+
+left.addEventListener(
+  "pointerdown",
+  setLeft
+);
+
+right.addEventListener(
+  "pointerdown",
+  setRight
+);
+
+left.addEventListener(
+  "pointerup",
+  stop
+);
+
+right.addEventListener(
+  "pointerup",
+  stop
+);
+
+left.addEventListener(
+  "pointercancel",
+  stop
+);
+
+right.addEventListener(
+  "pointercancel",
+  stop
+);
+
+
+/* KEYBOARD CONTROLS */
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (
+      event.key === "ArrowLeft" ||
+      event.key.toLowerCase() === "a"
+    ) {
+
+      direction = -1;
+
+    }
+
+    if (
+      event.key === "ArrowRight" ||
+      event.key.toLowerCase() === "d"
+    ) {
+
+      direction = 1;
+
+    }
+
+  }
+);
+
+
+document.addEventListener(
+  "keyup",
+  function(event) {
+
+    if (
+      event.key === "ArrowLeft" ||
+      event.key === "ArrowRight" ||
+      event.key.toLowerCase() === "a" ||
+      event.key.toLowerCase() === "d"
+    ) {
+
+      direction = 0;
+
+    }
+
+  }
+);
+
+
+/* CREATE TRAFFIC */
+
+function spawnTraffic() {
+
+  if (!playing) return;
+
+
+  const enemy =
+    document.createElement("div");
+
+  enemy.className =
+    "traffic";
+
+
+  const lane =
+    Math.floor(Math.random() * 3);
+
+
+  enemy.style.left =
+    (35 + lane * 15) + "%";
+
+
+  enemy.style.top =
+    "-150px";
+
+
+  game.appendChild(enemy);
+
+  objects.push(enemy);
+
+
+  setTimeout(
+    spawnTraffic,
+    1100
+  );
+}
+
+
+/* CREATE COIN */
+
+function spawnCoin() {
+
+  if (!playing) return;
+
+
+  const coin =
+    document.createElement("div");
+
+  coin.className =
+    "coin";
+
+
+  const lane =
+    Math.floor(Math.random() * 3);
+
+
+  coin.style.left =
+    (37 + lane * 15) + "%";
+
+
+  coin.style.top =
+    "-50px";
+
+
+  game.appendChild(coin);
+
+  objects.push(coin);
+
+
+  setTimeout(
+    spawnCoin,
+    1600
+  );
+}
+
+
+/* COLLISION */
+
+function collision(a, b) {
+
+  const rect1 =
+    a.getBoundingClientRect();
+
+  const rect2 =
+    b.getBoundingClientRect();
+
+
+  return !(
+    rect1.right < rect2.left ||
+    rect1.left > rect2.right ||
+    rect1.bottom < rect2.top ||
+    rect1.top > rect2.bottom
+  );
+}
+
+
+/* MAIN GAME LOOP */
+
+function loop() {
+
+  if (!playing) return;
+
+
+  /* CAR MOVEMENT */
+
+  carX += direction * 0.7;
+
+
+  if (carX < 31) {
+
+    carX = 31;
+
+  }
+
+
+  if (carX > 69) {
+
+    carX = 69;
+
+  }
+
+
+  car.style.left =
+    carX + "%";
+
+
+  /* OBJECT MOVEMENT */
+
+  for (
+    let i = objects.length - 1;
+    i >= 0;
+    i--
+  ) {
+
+    const obj =
+      objects[i];
+
+
+    let y =
+      parseFloat(
+        obj.style.top
+      ) || 0;
+
+
+    y += speed / 60;
+
+
+    obj.style.top =
+      y + "px";
+
+
+    /* COLLISION */
+
+    if (
+      collision(car, obj)
+    ) {
+
+      /* COIN */
+
+      if (
+        obj.classList.contains("coin")
+      ) {
+
+        score += 10;
+
+        scoreText.textContent =
+          score;
+
+        obj.remove();
+
+        objects.splice(i, 1);
+
+        continue;
+      }
+
+
+      /* TRAFFIC */
+
+      endGame();
+
+      return;
+    }
+
+
+    /* DELETE OLD OBJECT */
+
+    if (
+      y > window.innerHeight + 100
+    ) {
+
+      obj.remove();
+
+      objects.splice(i, 1);
+    }
+
+  }
+
+
+  /* SCORE */
+
+  score++;
+
+  scoreText.textContent =
+    score;
+
+
+  /* SPEED */
+
+  speed =
+    Math.min(
+      180,
+      70 + score / 20
+    );
+
+
+  speedText.textContent =
+    Math.floor(speed);
+
+
+  requestAnimationFrame(loop);
+}
+
+
+/* GAME OVER */
+
+function endGame() {
+
+  playing = false;
+
+
+  document.getElementById(
+    "finalScore"
+  ).textContent = score;
+
+
+  document.getElementById(
+    "gameover"
+  ).style.display = "flex";
+}
