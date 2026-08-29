@@ -1,0 +1,532 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  touch-action: none;
+}
+
+body {
+  overflow: hidden;
+  background: #111;
+  font-family: Arial, sans-serif;
+}
+
+#game {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      #70c9ff 0%,
+      #d9f5ff 45%,
+      #69a34b 45%
+    );
+}
+
+/* SUN */
+
+#sun {
+  position: absolute;
+
+  width: 70px;
+  height: 70px;
+
+  border-radius: 50%;
+
+  background: #fff4a3;
+
+  top: 7%;
+  right: 10%;
+
+  box-shadow: 0 0 40px #fff;
+}
+
+/* CITY */
+
+.city {
+  position: absolute;
+
+  bottom: 54%;
+
+  width: 100%;
+  height: 22%;
+
+  display: flex;
+  align-items: end;
+  justify-content: space-around;
+}
+
+.building {
+  width: 9%;
+
+  background: #777;
+
+  border: 2px solid #555;
+
+  box-shadow:
+    inset 0 0 15px #333;
+}
+
+.building:nth-child(1) {
+  height: 75%;
+}
+
+.building:nth-child(2) {
+  height: 100%;
+}
+
+.building:nth-child(3) {
+  height: 65%;
+}
+
+.building:nth-child(4) {
+  height: 85%;
+}
+
+.building:nth-child(5) {
+  height: 55%;
+}
+
+.building:nth-child(6) {
+  height: 90%;
+}
+
+.window {
+  width: 100%;
+  height: 15px;
+
+  margin-top: 12px;
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #ffe36b 0 10px,
+      transparent 10px 20px
+    );
+}
+
+/* ROAD */
+
+.road {
+  position: absolute;
+
+  left: 50%;
+  bottom: -10%;
+
+  transform: translateX(-50%);
+
+  width: 95%;
+  height: 75%;
+
+  background: #333;
+
+  clip-path:
+    polygon(
+      38% 0,
+      62% 0,
+      100% 100%,
+      0 100%
+    );
+}
+
+.road::before,
+.road::after {
+
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+
+  height: 100%;
+  width: 7px;
+
+  background: white;
+}
+
+.road::before {
+  left: 20%;
+}
+
+.road::after {
+  right: 20%;
+}
+
+/* ROAD CENTER LINE */
+
+.lines {
+
+  position: absolute;
+
+  width: 8px;
+  height: 100%;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      white 0 45px,
+      transparent 45px 85px
+    );
+}
+
+/* PLAYER CAR */
+
+#car {
+
+  position: absolute;
+
+  width: 85px;
+  height: 145px;
+
+  left: 50%;
+  bottom: 13%;
+
+  transform: translateX(-50%);
+
+  z-index: 10;
+}
+
+.car-body {
+
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #7a0000,
+      #ff2020,
+      #8b0000
+    );
+
+  border-radius:
+    20px 20px 12px 12px;
+
+  box-shadow:
+    0 10px 20px #000,
+    inset 5px 0 8px #ff7777;
+}
+
+/* FRONT WINDOW */
+
+.window-front {
+
+  position: absolute;
+
+  width: 55px;
+  height: 40px;
+
+  left: 15px;
+  top: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #bdefff,
+      #234b66
+    );
+
+  border-radius:
+    12px 12px 5px 5px;
+}
+
+/* BACK WINDOW */
+
+.window-back {
+
+  position: absolute;
+
+  width: 55px;
+  height: 35px;
+
+  left: 15px;
+  top: 65px;
+
+  background: #17394d;
+
+  border-radius:
+    5px 5px 10px 10px;
+}
+
+/* WHEELS */
+
+.wheel {
+
+  position: absolute;
+
+  width: 15px;
+  height: 35px;
+
+  background: #111;
+
+  border-radius: 8px;
+}
+
+.w1 {
+  left: -7px;
+  top: 25px;
+}
+
+.w2 {
+  right: -7px;
+  top: 25px;
+}
+
+.w3 {
+  left: -7px;
+  bottom: 20px;
+}
+
+.w4 {
+  right: -7px;
+  bottom: 20px;
+}
+
+/* TRAFFIC */
+
+.traffic {
+
+  position: absolute;
+
+  width: 65px;
+  height: 110px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #222,
+      #777,
+      #222
+    );
+
+  border-radius: 14px;
+
+  z-index: 5;
+
+  box-shadow:
+    0 5px 15px #000;
+}
+
+.traffic::before {
+
+  content: "";
+
+  position: absolute;
+
+  width: 40px;
+  height: 30px;
+
+  left: 12px;
+  top: 15px;
+
+  border-radius: 7px;
+
+  background: #9bd9ef;
+}
+
+/* COINS */
+
+.coin {
+
+  position: absolute;
+
+  width: 30px;
+  height: 30px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      #fff27a,
+      #ffb300
+    );
+
+  border: 3px solid #fff06a;
+
+  box-shadow:
+    0 0 15px #ffd000;
+
+  z-index: 6;
+}
+
+/* HUD */
+
+#hud {
+
+  position: absolute;
+
+  top: 15px;
+  left: 15px;
+  right: 15px;
+
+  z-index: 30;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  color: white;
+
+  font-weight: bold;
+
+  text-shadow:
+    2px 2px 4px #000;
+}
+
+.panel {
+
+  background: #0008;
+
+  padding: 10px 14px;
+
+  border-radius: 12px;
+
+  backdrop-filter: blur(5px);
+}
+
+/* CONTROLS */
+
+.controls {
+
+  position: absolute;
+
+  bottom: 20px;
+
+  left: 0;
+  right: 0;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  padding: 0 25px;
+
+  z-index: 50;
+}
+
+.control {
+
+  width: 75px;
+  height: 75px;
+
+  border-radius: 50%;
+
+  border: 2px solid #ffffff88;
+
+  background: #0009;
+
+  color: white;
+
+  font-size: 32px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+/* START */
+
+#start {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 100;
+
+  background: #000d;
+
+  color: white;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+}
+
+#start h1 {
+
+  font-size: 48px;
+
+  margin-bottom: 10px;
+
+  letter-spacing: 3px;
+}
+
+#start p {
+
+  color: #ccc;
+
+  margin-bottom: 30px;
+}
+
+#start button,
+#restart {
+
+  border: 0;
+
+  border-radius: 30px;
+
+  padding: 16px 45px;
+
+  font-size: 20px;
+
+  font-weight: bold;
+
+  background: #ff2020;
+
+  color: white;
+}
+
+/* GAME OVER */
+
+#gameover {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 90;
+
+  background: #000b;
+
+  color: white;
+
+  display: none;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+#gameover h2 {
+
+  font-size: 42px;
+
+  margin-bottom: 15px;
+}
+
+#restart {
+
+  margin-top: 25px;
+
+  padding: 14px 35px;
+
+  font-size: 18px;
+}
